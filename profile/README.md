@@ -36,6 +36,11 @@ Windows 10/11 • Free Forever • No Registration Required
 - Source search
 - Tag-based search
 
+**Pin System**
+- Pin any item
+- Easly look through all pins or type of pin
+- Easy to use
+
 **Keyboard Shortcuts**
 - `Ctrl + Shift + 1-9` for quick access
 - Choose shortcut behavior (None, Copy, Copy & Paste)
@@ -62,7 +67,6 @@ Windows 10/11 • Free Forever • No Registration Required
 - Custom Tag System
 - AI Summaries
 - Minimalistic Mode
-- Pin System
 
 ## Links
 
