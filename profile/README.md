@@ -138,13 +138,6 @@ The longer write-up, project by project and with the trade-offs, is in [ARCHITEC
 - Boring technology that we can still maintain in two years.
 - Installs come from the Store or the Marketplace, so updates stay boring too.
 
-## Repositories
-
-- [ClipSafe](https://github.com/ClipSafe/ClipSafe): the clipboard manager, its tests and the MSIX project
-- [ClipSafe-Notes](https://github.com/ClipSafe/ClipSafe-Notes): the Markdown notes app
-- [ClipSafe-VSCode](https://github.com/ClipSafe/ClipSafe-VSCode): the VS Code extension
-- [ClipSafe-Website](https://github.com/ClipSafe/ClipSafe-Website): clipsafe.app, its APIs and browser tools
-
 ## Links
 
 - Website: https://clipsafe.app
