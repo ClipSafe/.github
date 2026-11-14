@@ -7,7 +7,7 @@ This is the technical description of the ClipSafe products: what each app is mad
 | Product | What it is | Stack | Ships on |
 | --- | --- | --- | --- |
 | ClipSafe | Clipboard manager for Windows | .NET 10, WPF, EF Core 10, SQLite, MSIX | Microsoft Store |
-| ClipSafe Notes | Markdown notes app for Windows | .NET 10, WPF, Markdig, WebView2, SQLite FTS5, MSIX | Microsoft Store |
+| ClipSafe Notes | Markdown notes app for Windows | .NET 10, WPF, Markdig, NativeMarkdown.Wpf, SQLite FTS5, MSIX | Microsoft Store |
 | ClipSafe for VS Code | Editor extension that sends code to ClipSafe | TypeScript, esbuild, VS Code API | VS Code Marketplace |
 | clipsafe.app | Website, docs and small APIs | Static HTML/CSS/JS, Cloudflare Pages Functions, R2 | Cloudflare Pages |
 
@@ -108,8 +108,7 @@ GitHub Actions builds the solution on every push and pull request (`dotnet-deskt
 ### Stack
 
 - .NET 10, C#, WPF, MVVM with CommunityToolkit.Mvvm
-- Markdig for Markdown to HTML
-- WebView2 for the rendered preview
+- Markdig for parsing, rendered by the in-house [NativeMarkdown.Wpf](https://github.com/ClipSafe/NativeMarkdown.Wpf) library
 - Microsoft.Data.Sqlite with an FTS5 virtual table for search
 - MSIX packaging through its own WAP project, x86/x64/arm64 bundle
 
@@ -121,9 +120,15 @@ Files are the source of truth. The SQLite index is disposable: on startup the va
 
 ### Preview
 
-The preview renders Markdown to HTML with Markdig, wraps it in a small document with theme CSS, and shows it in WebView2. Local images are served through a virtual host mapped to the vault folder.
+Markdown is parsed with Markdig and rendered straight into a WPF `FlowDocument` by the in-house
+[NativeMarkdown.Wpf](https://github.com/ClipSafe/NativeMarkdown.Wpf) library.
+The viewer keeps the visual block for every top-level Markdown block and rebuilds only the blocks whose
+source changed. Typing redraws the edited paragraph instead of reloading the document, which is what
+removed the flicker and the debounce timer the earlier preview relied on. Color emoji are drawn as vector
+art from the system emoji font, so they stay sharp at any size and add nothing to the install size.
 
-Updates are debounced and applied to the existing document instead of re-navigating, which is what stops the preview from flashing white on every keystroke. The browser is also kept out of the way until the startup screen is gone, because WebView2 paints above WPF content and would otherwise cover the loading overlay.
+Rendering inside the app also removed a compositor quirk: there is no browser surface painting above WPF
+content, so the startup overlay no longer has to wait for the preview to move out of the way.
 
 ### Integration with ClipSafe
 
@@ -220,6 +225,6 @@ Each product carries its own version and its own changelog file:
 
 **Web and edge:** Cloudflare Pages, Pages Functions on the Workers runtime, R2 object storage, Analytics Engine, Email Routing, redirect rules, caching and header policy, JSON-LD and technical SEO
 
-**Tooling and quality:** Git and GitHub, GitHub Actions, MSBuild and Visual Studio automation, xUnit, `node:test`, VS Code Test CLI, ESLint, esbuild, Markdig, WebView2
+**Tooling and quality:** Git and GitHub, GitHub Actions, MSBuild and Visual Studio automation, xUnit, `node:test`, VS Code Test CLI, ESLint, esbuild, Markdig, NativeMarkdown.Wpf
 
 **Product work:** product design and copy, release notes, store listings and screenshots, support, privacy and security decisions end to end
